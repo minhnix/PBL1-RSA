@@ -206,7 +206,7 @@ void RSA::Encrypt(	const char *sourceFile, const char *destFile,
 	//open the input and output files
 	std::ifstream source(sourceFile, std::ios::in | std::ios::binary);
 	if (!source)
-		throw "Error RSA06: Opening file \"sourceFile\" failed.";
+		throw "Error: Opening file failed.";
 	std::ofstream dest(destFile, std::ios::out | std::ios::binary);
 	if (!dest)
 		throw "Error RSA07: Creating file \"destFile\" failed.";
@@ -265,7 +265,7 @@ void RSA::Decrypt(	const char *sourceFile, const char *destFile,
 	//open the input and output files
 	std::ifstream source(sourceFile, std::ios::in | std::ios::binary);
 	if (!source)
-		throw "Error RSA08: Opening file \"sourceFile\" failed.";
+		throw "Error: Opening file failed.";
 	std::ofstream dest(destFile, std::ios::out | std::ios::binary);
 	if (!dest)
 		throw "Error RSA09: Creating file \"destFile\" failed.";
