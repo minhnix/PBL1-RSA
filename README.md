@@ -8,6 +8,9 @@ It will have 3 feature you can choose
   1. Generate key
   2. Encrypt file
   3. Decrypt file
+
 If you want 'Generate key', you press 1.
+
 If you want 'Encrypt file', you press 2.
+
 If you want 'Decrypt file', you press 3.
