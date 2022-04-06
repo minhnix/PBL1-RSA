@@ -26,7 +26,8 @@ int main(int argc, char *argv[])
 void exitError(const char *message = "\0")
 {
 	cout << message << endl;
-	std::exit(EXIT_FAILURE);
+	// std::exit(EXIT_FAILURE);
+	// return;
 }
 
 void missingArgumentError(const char *argName)
@@ -53,7 +54,7 @@ void genfilekey(unsigned long int digits)
 	fputs("\n", filePrivate);
 	fputs(d.c_str(),filePrivate);
 	fclose(filePublic);fclose(filePrivate);
-	cout << "\nDone! Please check files...\n";
+	cout << "\nDone! Please check files 'publickey.txt' and 'privatekey.txt'\n";
 }
 
 void encryptFile(string fileName, string fileNamePublicKey)
@@ -65,7 +66,10 @@ void encryptFile(string fileName, string fileNamePublicKey)
 		fp = fopen(fileNamePublicKey.c_str(), "r"); 
 		int i;
 		fgets(arr, 200, fp);
-		if (arr[0] < '0' || arr[0] > '9') exitError("cannot open file, please check your filename");
+		if (arr[0] < '0' || arr[0] > '9') {
+			cout << "cannot open file '"<< fileNamePublicKey << "', please check your filename\n";
+			return;
+		}
 		for (i = 0;i < 200 ;i++) {
 			if (arr[i] == '\n' ) break;
 		}
@@ -104,7 +108,10 @@ void decryptFile(string fileName,string fileNamePrivateKey)
 		fp = fopen(fileNamePrivateKey.c_str(), "r"); 
 		int i;
 		fgets(arr, 200, fp);
-		if (arr[0] < '0' || arr[0] > '9') exitError("cannot open file, please check your filename");
+		if (arr[0] < '0' || arr[0] > '9') {
+			cout << "cannot open file '"<< fileNamePrivateKey << "', please check your filename\n";
+			return;
+		}
 		for (i = 0;i < 200 ;i++) {
 			if (arr[i] == '\n' ) break;
 		}
@@ -120,9 +127,6 @@ void decryptFile(string fileName,string fileNamePrivateKey)
 		Key privateKey(n,d);
 		
 		char* cypherFile = (char*) fileName.c_str();
-		// FILE * fp = NULL; 
-		// fp = fopen(cypherFile, "a"); 
-		// fputc(' ', fp);
 		char destFile[] = "new_message.txt";
         cout << "\n" << "Decrypting the message: " << "\"" << fileName << "\"" << " ... \n";
         RSA::Decrypt(cypherFile, destFile, privateKey);
@@ -140,108 +144,64 @@ void decryptFile(string fileName,string fileNamePrivateKey)
 void encryptfile(){
 	std::string key;
     std::string fileName,filePublicKey;
-	cout<<"NHAP FILE BAN CAN MA HOA\n";
-	cout<<"BAN CO THE SU DUNG FILE message.txt HOAC NHAP DUONG DAN DEN FILE CAN MA HOA:\n";
+	cout<<"Enter the file name to be encrypted: ";
     cin>>fileName;
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
-	cout<<"NHAP FILE CHUA PUBLICKEY\n";
-	cout<<"BAN CO THE SU DUNG FILE publickey.txt HOAC NHAP DUONG DAN DEN FILE CHUA PUBLICKEY:\n";
-    
+	cout<<"Enter the public key filename: ";
 	cin>>filePublicKey;
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
 	encryptFile(fileName,filePublicKey);
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
 }
 void newfilekey(){
 	unsigned long int n;
-	cout<<"ENTER KEY LENGTH TO CREATE\t  8 < LENGTH < 100\n";
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
+	cout<<"Enter the key length (10 <= N <= 100): ";
 	cin>>n;
-	while (n<8||n>=100){
-		cout<<"LENGTH INCORRECT, TRY AGAIN\n";
+	while (n<10||n>100){
+		cout<<"Please enter again: ";
 		cin>>n;
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
 	} 
 	genfilekey(n);
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
-
-	//ghi con cụ key vào file key
 }
 void decryptfile(){
     std::string fileName,filenamePrivatekey;
-	cout<<"ENTER THE FILE NAME TO BE DECRYPTED\n";
-	cout<<"YOU CAN USE cyphertext.txt OR ENTER YOUR FILE:\n";
-	// cout<<"DEFAULT: cyphertext.txt\n";
-	// cout<<"NHAP FILENAME CAN MA HOA\n";
+	cout<<"Enter the file name to be decrypted: ";
 	cin>>fileName;
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
-	// cout<<"DEFAULT: privatekey.txt\n";
-	// cout<<"NHAP FILENAME PRIVETEKEY\n";
-	cout<<"ENTER FILENAME PRIVATEKEY\n";
-	cout<<"YOU CAN USE privatekey.txt OR ENTER YOUR FILE:\n";
+	cout<<"Enter the private key filename: ";
 	cin>>filenamePrivatekey;
-	cout<<"\n-------------------------------------------------------------------------------------------------\n";
 	decryptFile(fileName,filenamePrivatekey);// mã hóa text
-}
-void openfilemessage(){
-	char text[100];
-	std::cout << "Nhap vao 1 chuoi: \n";
-	std::cin.getline(text, sizeof(text));
-	
-	std::cout << "Chuoi da nhap: " << text << "\n";
-	FILE * fp ; 
-		fp = fopen("message.txt", "w+"); 
-		//std::string text;
-		//std::cout<<"NHAP VAN BAN CAN GUI DI\n";
-		//fflush(stdin);
-		// fgets(text,sizeof(text)+1,stdin);
-		//std::getline(cin,textS
-		//std::getline(cin,str);
-		//fgets(arr, 200, fp);
-		// fprintf(fp,"%s",text);
-		fputs(text,fp);
-		fclose(fp);
-}
-
-void openfilemessage_new(){	
-	//mở file message_new.txt
 }
 void MENU(){
     bool key=true;
-    int i;
+    int i,dcr=1;
     while(key==true){
-		//std::string one="NEW PUBLICKEY AND PRIVATEKEY",two="ENCRYPTFILE",three="DECRYPTFILE",four="OPEN FILE MESSAGE SENT",five="OPEN FILE MESSAGE RECIEVE",six="EXIT";
-        cout<<"\n\t\tMENU PROGRAM\n";
-		cout<<" _______________________________________________\n";
-		cout<<"|\t1: NEW PUBLICKEY AND PRIVATEKEY \t|\n";
-		cout<<"|\t2: ENCRYPTFILE                  \t|\n";
-		cout<<"|\t3: DECRYPTFILE                  \t|\n";
-		//cout<<"|\t4: OPEN FILE MESSAGE SENT       \t|\n";
-		//cout<<"|\t5: OPEN FILE MESSAGE RECIEVE    \t|\n";
-		cout<<" -----------------------------------------------\n";
-		cout<<"\t   PRESS ANY KEY TO EXIT\n";
-        cout<<"ENTER YOUR SELECTION\n";
+        cout<<"\nMENU PROGRAM\n\n";
+		cout<<"1: Generate key\n";
+		cout<<"2: Encrypt file\n";
+		cout<<"3: Decrypt file\n";
+		cout<<"4: Exit\n";
+        cout<<"Enter your selection: ";
         cin>>i;
         switch (i){
         case 1:
 			newfilekey();
+			cout << "\nDo you want to continue?\n";
+			cout << "0: No\n1: Yes\nEnter your selection: ";
+			cin >> dcr;
             break;
         case 2:
 			encryptfile();
+			cout << "\nDo you want to continue?\n";
+			cout << "0: No\n1: Yes\nEnter your selection: ";
+			cin >> dcr;
             break;
         case 3:
 			decryptfile();
+			cout << "\nDo you want to continue?\n";
+			cout << "0: No\n1: Yes\nEnter your selection: ";
+			cin >> dcr;
             break;
-        // case 4:
-		// 	openfilemessage();
-        //     break;
-        // case 5:
-        //     openfilemessage_new();
-        //     break;
     	default:
-		key=false;
-        cout<<"EXIT";
+			key=false;
             break;
         }
+		if (dcr == 0) break;
     }
 }
