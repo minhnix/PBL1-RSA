@@ -1,6 +1,6 @@
 # PBL1-RSA
 How to run the code
-Simply running this file makefile
+simply running this file makefile
 with make command will create main.exe. 
 Then running that file main.exe 
 with .\main command will run the code.
